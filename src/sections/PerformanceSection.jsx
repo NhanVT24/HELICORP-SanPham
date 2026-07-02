@@ -110,7 +110,7 @@ export default function PerformanceSection({ darkMode }) {
               height={slide.height}
               loading="lazy"
               decoding="async"
-              fetchPriority="low"
+              fetchpriority="low"
               className={`pointer-events-none absolute inset-0 h-full w-full object-contain drop-shadow-[0_35px_65px_rgba(0,0,0,0.3)] transition-[opacity,transform,filter] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 index === activeSlide
                   ? "scale-100 opacity-100 blur-0"

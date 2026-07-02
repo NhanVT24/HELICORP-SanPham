@@ -1,13 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function HeroSections({ darkMode }) {
   const iframeRef = useRef(null);
   const videoShellRef = useRef(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const youtubeOrigin =
     typeof window !== "undefined" ? window.location.origin : "http://localhost";
-  const youtubeSrc = `https://www.youtube.com/embed/_-AS5DtDeqs?si=_EaDwMg1hA-jWZIk&enablejsapi=1&origin=${encodeURIComponent(
+  const youtubeSrc = `https://www.youtube-nocookie.com/embed/_-AS5DtDeqs?enablejsapi=1&origin=${encodeURIComponent(
     youtubeOrigin,
   )}&autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=0&iv_load_policy=3&cc_load_policy=0&fs=0&disablekb=1`;
+
+  useEffect(() => {
+    let timer;
+    const scheduleVideo = () => {
+      timer = window.setTimeout(() => setShouldLoadVideo(true), 1200);
+    };
+
+    if (document.readyState === "complete") scheduleVideo();
+    else window.addEventListener("load", scheduleVideo, { once: true });
+
+    return () => {
+      window.removeEventListener("load", scheduleVideo);
+      window.clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -37,7 +53,12 @@ export default function HeroSections({ darkMode }) {
     };
 
     const handlePlayerMessage = (event) => {
-      if (event.origin !== "https://www.youtube.com") return;
+      if (
+        event.origin !== "https://www.youtube-nocookie.com" &&
+        event.origin !== "https://www.youtube.com"
+      ) {
+        return;
+      }
 
       let message = event.data;
       if (typeof message === "string") {
@@ -76,7 +97,7 @@ export default function HeroSections({ darkMode }) {
       captionTimers.forEach((timer) => window.clearTimeout(timer));
       postCommand("pauseVideo");
     };
-  }, []);
+  }, [shouldLoadVideo]);
 
   return (
     <section
@@ -90,7 +111,7 @@ export default function HeroSections({ darkMode }) {
           </p>
 
           <h1
-            className={`m-0 animate-[appleTitleIn_900ms_cubic-bezier(0.22,1,0.36,1)_120ms_forwards,appleGradient_7s_ease-in-out_infinite] whitespace-nowrap rounded-[20px] bg-[length:240%_240%] px-5 pb-3.5 pt-2.5 text-[clamp(2.1rem,3.6vw,3.55rem)] font-extrabold uppercase leading-[1.16] tracking-[0.035em] opacity-0 [background-clip:text] [filter:blur(10px)] [text-shadow:0_2px_18px_rgba(255,255,255,0.22),0_0_36px_rgba(0,113,227,0.18)] [transform:translateY(26px)] [word-spacing:0.12em] [-webkit-background-clip:text] max-md:whitespace-normal max-md:px-3 max-md:pb-3 max-md:pt-2 max-md:text-[clamp(1.8rem,8.5vw,3.15rem)] max-md:tracking-[0.02em] ${
+            className={`m-0 animate-[appleGradient_7s_ease-in-out_infinite] whitespace-nowrap rounded-[20px] bg-[length:240%_240%] px-5 pb-3.5 pt-2.5 text-[clamp(2.1rem,3.6vw,3.55rem)] font-extrabold uppercase leading-[1.16] tracking-[0.035em] [background-clip:text] [text-shadow:0_2px_18px_rgba(255,255,255,0.22),0_0_36px_rgba(0,113,227,0.18)] [word-spacing:0.12em] [-webkit-background-clip:text] max-md:whitespace-normal max-md:px-3 max-md:pb-3 max-md:pt-2 max-md:text-[clamp(1.8rem,8.5vw,3.15rem)] max-md:tracking-[0.02em] ${
               darkMode
                 ? "bg-[linear-gradient(100deg,#fff_0%,#b7d7ff_18%,#9bbcff_34%,#d6b4ff_50%,#ffb6d9_66%,#ffd39b_82%,#fff_100%)] text-transparent"
                 : "bg-[linear-gradient(100deg,#fff_0%,#8fc5ff_22%,#c8afff_48%,#ff9dca_72%,#fff_100%)] text-transparent"
@@ -120,15 +141,16 @@ export default function HeroSections({ darkMode }) {
         className="absolute inset-0 animate-[appleVideoIn_900ms_cubic-bezier(0.22,1,0.36,1)_780ms_forwards] overflow-hidden bg-black opacity-0 [mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,rgba(0,0,0,0.82)_94%,transparent_100%)] [transform:scale(1.3)] [-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,rgba(0,0,0,0.82)_94%,transparent_100%)]"
         ref={videoShellRef}
       >
-        <iframe
-          ref={iframeRef}
-          src={youtubeSrc}
-          title="YouTube video player"
-          allow="autoplay; picture-in-picture"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          className="pointer-events-none absolute left-1/2 top-1/2 block h-[63vw] min-h-[112vh] w-[112vw] min-w-[199.12vh] -translate-x-1/2 -translate-y-1/2 border-0"
-        />
+        {shouldLoadVideo && (
+          <iframe
+            ref={iframeRef}
+            src={youtubeSrc}
+            title="YouTube video player"
+            allow="autoplay; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            className="pointer-events-none absolute left-1/2 top-1/2 block h-[63vw] min-h-[112vh] w-[112vw] min-w-[199.12vh] -translate-x-1/2 -translate-y-1/2 animate-[appleFadeUp_500ms_ease_forwards] border-0 opacity-0"
+          />
+        )}
       </div>
     </section>
   );

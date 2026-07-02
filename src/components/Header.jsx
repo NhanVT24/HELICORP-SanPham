@@ -41,7 +41,9 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
         >
           <span className="flex h-10 w-10 shrink-0 items-center justify-center">
             <img
-              src={darkMode ? "/white-removebg-preview.png" : "/black-removebg-preview.png"}
+              src={darkMode ? "/logo-white-2x.png" : "/logo-black-2x.png"}
+              width={darkMode ? 80 : 120}
+              height={darkMode ? 80 : 68}
               alt="Apple mark"
               className="h-full w-full object-contain drop-shadow-[0_10px_22px_rgba(0,0,0,.18)]"
             />

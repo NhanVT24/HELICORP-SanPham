@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 
 const colors = [
-  { id: "orange", label: "Cosmic Orange", swatch: "#ff6b1a", image: "/color_orange-removebg-preview.png" },
-  { id: "blue", label: "Deep Blue", swatch: "#394b63", image: "/color_blue.png" },
-  { id: "silver", label: "Silver", swatch: "#d9d9d6", image: "/color_silver-removebg-preview.png" },
+  { id: "orange", label: "Cosmic Orange", swatch: "#ff6b1a", image: "/color_orange-removebg-preview.webp" },
+  { id: "blue", label: "Deep Blue", swatch: "#394b63", image: "/color_blue.webp" },
+  { id: "silver", label: "Silver", swatch: "#d9d9d6", image: "/color_silver-removebg-preview.webp" },
 ];
 
 const features = [
@@ -28,7 +28,7 @@ const features = [
     label: "Aluminum unibody",
     icon: Box,
     accent: "#6ea8ff",
-    image: "/Aluminum_unibody-removebg-preview.png",
+    image: "/Aluminum_unibody-removebg-preview.webp",
     description:
       "Optimized for performance and all-day battery life. The aluminum alloy unibody is remarkably light and exceptionally effective at conducting heat.",
   },
@@ -37,7 +37,7 @@ const features = [
     label: "Vapor chamber",
     icon: ThermometerSun,
     accent: "#4dd7ff",
-    image: "/Vapor_chamber-removebg-preview.png",
+    image: "/Vapor_chamber-removebg-preview.webp",
     description:
       "Deionized water sealed inside moves heat away from the A19 Pro chip, enabling even higher sustained performance on iPhone 17 Pro Max.",
   },
@@ -46,7 +46,7 @@ const features = [
     label: "Ceramic Shield",
     icon: ShieldCheck,
     accent: "#b6a0ff",
-    image: "/Ceramic_Shield.-removebg-preview.png",
+    image: "/Ceramic_Shield.-removebg-preview.webp",
     description:
       "Ceramic Shield protects the back of iPhone 17 Pro Max with 4x better resistance to cracks, while Ceramic Shield 2 on the front delivers 3x better scratch resistance.",
   },
@@ -55,7 +55,7 @@ const features = [
     label: "Immersive pro display",
     icon: Smartphone,
     accent: "#ff70b8",
-    image: "/Immersive_pro_display.-removebg-preview.png",
+    image: "/Immersive_pro_display.-removebg-preview.webp",
     description:
       "Our best-ever 6.9-inch Super Retina XDR display. Brighter, with better anti-reflection and ProMotion technology up to 120Hz.",
   },
@@ -64,7 +64,7 @@ const features = [
     label: "Camera Control",
     icon: Focus,
     accent: "#ffd166",
-    image: "/camera_control__gl7rgu1l9066_large_2x-removebg-preview.png",
+    image: "/camera_control__gl7rgu1l9066_large_2x-removebg-preview.webp",
     description:
       "Instantly take a photo, record video, adjust settings, and more — so you never miss a moment.",
   },
@@ -73,7 +73,7 @@ const features = [
     label: "Action button",
     icon: Zap,
     accent: "#ff8a3d",
-    image: "/actionbutton.png",
+    image: "/actionbutton.webp",
     description:
       "A customizable fast track to your favorite feature. Long press to launch Silent mode, Translation, Shortcuts, and more.",
   },

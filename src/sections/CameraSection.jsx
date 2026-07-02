@@ -2,19 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 
 const cameraSlides = [
   {
-    image: "/iPhone_17_pro_max_camera-1-removebg-preview.png",
+    image: "/iPhone_17_pro_max_camera-1-removebg-preview.webp",
     label: "48MP Main",
     width: 671,
     height: 372,
   },
   {
-    image: "/yeqLy2FcV3GcCycuTx6zVZ-removebg-preview.png",
+    image: "/yeqLy2FcV3GcCycuTx6zVZ-removebg-preview.webp",
     label: "Pro telephoto",
     width: 666,
     height: 375,
   },
   {
-    image: "/iphone-17-pro-512gb-2-removebg-preview.png",
+    image: "/iphone-17-pro-512gb-2-removebg-preview.webp",
     label: "Ultra Wide",
     width: 666,
     height: 375,
@@ -148,7 +148,7 @@ export default function CameraSection({ darkMode }) {
               height={slide.height}
               loading="lazy"
               decoding="async"
-              fetchPriority="low"
+              fetchpriority="low"
               className={`pointer-events-none absolute left-1/2 top-1/2 h-auto w-[112%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_55px_rgba(0,0,0,0.24)] transition-[opacity,transform,filter] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 index === activeSlide
                   ? "scale-100 opacity-100 blur-0"
@@ -269,13 +269,13 @@ export default function CameraSection({ darkMode }) {
 
           <div className="relative min-h-[520px] sm:min-h-[680px]">
             <img
-              src="/camerafront-removebg-preview.png"
+              src="/camerafront-removebg-preview.webp"
               alt="iPhone 17 Pro Max Center Stage front camera"
               width="500"
               height="499"
               loading="lazy"
               decoding="async"
-              fetchPriority="low"
+              fetchpriority="low"
               className="pointer-events-none absolute left-1/2 top-1/2 h-auto w-[92%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.28)]"
             />
           </div>
