@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export default function HeroSections({ darkMode }) {
+export default function HeroSections({ darkMode, language }) {
   const iframeRef = useRef(null);
   const videoShellRef = useRef(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
@@ -11,17 +11,12 @@ export default function HeroSections({ darkMode }) {
   )}&autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=0&iv_load_policy=3&cc_load_policy=0&fs=0&disablekb=1`;
 
   useEffect(() => {
-    let timer;
-    const scheduleVideo = () => {
-      timer = window.setTimeout(() => setShouldLoadVideo(true), 1200);
-    };
-
-    if (document.readyState === "complete") scheduleVideo();
-    else window.addEventListener("load", scheduleVideo, { once: true });
+    const loadVideo = () => setShouldLoadVideo(true);
+    const events = ["pointerdown", "keydown", "touchstart"];
+    events.forEach((eventName) => window.addEventListener(eventName, loadVideo, { once: true, passive: true }));
 
     return () => {
-      window.removeEventListener("load", scheduleVideo);
-      window.clearTimeout(timer);
+      events.forEach((eventName) => window.removeEventListener(eventName, loadVideo));
     };
   }, []);
 
@@ -123,24 +118,25 @@ export default function HeroSections({ darkMode }) {
           <p
             className="m-0 max-w-2xl animate-[appleFadeUp_750ms_ease_380ms_forwards] text-[clamp(0.95rem,1.35vw,1.1rem)] font-medium leading-relaxed tracking-[0.01em] text-white/75 opacity-0 [text-shadow:0_2px_12px_rgba(0,0,0,0.55)]"
           >
-            Built to understand you, create with you, and make every day feel effortless.
+            {language === "vi" ? "Được tạo ra để thấu hiểu, đồng hành sáng tạo và khiến mỗi ngày trở nên nhẹ nhàng hơn." : "Built to understand you, create with you, and make every day feel effortless."}
           </p>
 
           <div className="mt-2 flex animate-[appleFadeUp_750ms_ease_600ms_forwards] flex-wrap justify-center gap-4 opacity-0">
-            <a href="#design" className="inline-flex h-12 min-w-[132px] items-center justify-center rounded-full bg-[#e39f00] px-7 text-[0.98rem] font-extrabold text-white shadow-[0_16px_38px_rgba(0,113,227,0.35)] transition duration-200 [text-shadow:0_1px_8px_rgba(0,0,0,0.18)] hover:-translate-y-0.5 hover:bg-[#0b7df3]">
-              Learn more
+            <a href="#design" className="inline-flex h-12 min-w-[132px] items-center justify-center rounded-full bg-[#f5a623] px-7 text-[0.98rem] font-extrabold text-[#111] shadow-[0_16px_38px_rgba(245,166,35,0.28)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#ffb83d]">
+              {language === "vi" ? "Tìm hiểu thêm" : "Learn more"}
             </a>
-            <a href="#buy" className="inline-flex h-12 min-w-[132px] items-center justify-center rounded-full border border-white/20 bg-black/15 px-7 text-[0.98rem] font-extrabold text-white backdrop-blur-xl transition duration-200 [text-shadow:0_1px_8px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 hover:bg-black/25">
-              Buy
+            <a href="#order" className="inline-flex h-12 min-w-[132px] items-center justify-center rounded-full border border-white/20 bg-black/15 px-7 text-[0.98rem] font-extrabold text-white backdrop-blur-xl transition duration-200 [text-shadow:0_1px_8px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 hover:bg-black/25">
+              {language === "vi" ? "Mua ngay" : "Buy"}
             </a>
           </div>
         </div>
       </div>
 
       <div
-        className="absolute inset-0 animate-[appleVideoIn_900ms_cubic-bezier(0.22,1,0.36,1)_780ms_forwards] overflow-hidden bg-black opacity-0 [mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,rgba(0,0,0,0.82)_94%,transparent_100%)] [transform:scale(1.3)] [-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,rgba(0,0,0,0.82)_94%,transparent_100%)]"
+        className="absolute inset-0 animate-[appleVideoIn_900ms_cubic-bezier(0.22,1,0.36,1)_780ms_forwards] overflow-hidden bg-black bg-cover bg-center opacity-0 [background-image:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),url('/thumnail.jpg')] [mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,rgba(0,0,0,0.82)_94%,transparent_100%)] [transform:scale(1.3)] [-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,rgba(0,0,0,0.82)_94%,transparent_100%)]"
         ref={videoShellRef}
       >
+        {!shouldLoadVideo && <div className="absolute inset-0 animate-pulse bg-[radial-gradient(circle_at_center,#292929,#050505_65%)]" aria-hidden="true" />}
         {shouldLoadVideo && (
           <iframe
             ref={iframeRef}

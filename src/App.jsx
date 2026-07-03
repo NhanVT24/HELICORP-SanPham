@@ -4,8 +4,13 @@ import HeroSections from "./sections/herosections.jsx";
 import DesignSection from "./sections/DesignSection.jsx";
 import CameraSection from "./sections/CameraSection.jsx";
 import PerformanceSection from "./sections/PerformanceSection.jsx";
+import ExploreSection from "./sections/ExploreSection.jsx";
+import WhyChooseSection from "./sections/WhyChooseSection.jsx";
+import OrderSection from "./sections/OrderSection.jsx";
+import Footer from "./components/Footer.jsx";
 
 const THEME_STORAGE_KEY = "landing-theme";
+const LANGUAGE_STORAGE_KEY = "landing-language";
 const METEORS = [
   { left: "4%", top: "8%", delay: "0s", duration: "8s" },
   { left: "26%", top: "-4%", delay: "2.3s", duration: "10s" },
@@ -21,6 +26,7 @@ export default function App() {
     return savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
   });
   const [activeId, setActiveId] = useState("hero");
+  const [language, setLanguage] = useState(() => localStorage.getItem(LANGUAGE_STORAGE_KEY) === "vi" ? "vi" : "en");
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -28,7 +34,12 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
-    const sectionIds = ["hero", "design", "camera", "performance", "explore"];
+    document.documentElement.lang = language;
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  }, [language]);
+
+  useEffect(() => {
+    const sectionIds = ["hero", "design", "camera", "performance", "explore", "why", "order"];
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter(Boolean);
@@ -39,7 +50,7 @@ export default function App() {
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
-        if (visibleSection) setActiveId(visibleSection.target.id);
+        if (visibleSection) setActiveId(["why", "order"].includes(visibleSection.target.id) ? "explore" : visibleSection.target.id);
       },
       { rootMargin: "-32% 0px -64%", threshold: 0 },
     );
@@ -85,18 +96,23 @@ export default function App() {
       <Header
         darkMode={isDark}
         activeId={activeId}
+        language={language}
+        onToggleLanguage={() => setLanguage((current) => current === "en" ? "vi" : "en")}
         onToggleTheme={() =>
           setTheme((current) => (current === "dark" ? "light" : "dark"))
         }
       />
 
       <main>
-        <HeroSections darkMode={isDark} />
-        <DesignSection darkMode={isDark} />
-        <CameraSection darkMode={isDark} />
-        <PerformanceSection darkMode={isDark} />
-        <section id="explore" className="min-h-screen" />
+        <HeroSections darkMode={isDark} language={language} />
+        <DesignSection darkMode={isDark} language={language} />
+        <CameraSection darkMode={isDark} language={language} />
+        <PerformanceSection darkMode={isDark} language={language} />
+        <ExploreSection darkMode={isDark} language={language} />
+        <WhyChooseSection darkMode={isDark} language={language} />
+        <OrderSection darkMode={isDark} language={language} />
       </main>
+      <Footer darkMode={isDark} language={language} />
     </div>
   );
 }

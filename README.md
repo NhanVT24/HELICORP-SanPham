@@ -1,16 +1,15 @@
 # iPhone 17 Pro Max Landing Page
 
-React + Vite + Tailwind landing page lấy cảm hứng từ Apple, với:
+An interactive React, Vite, and Tailwind CSS product landing page featuring:
 
-- Video mở đầu từ Apple
-- Section giới thiệu cơ bản
-- Section thông tin chi tiết
-- Các section highlight hình ảnh
-- Bảng so sánh trực quan với iPhone 16 Pro Max
-- Sticky navigation
-- Scroll reveal animation
+- Cinematic product storytelling
+- Responsive dark and light modes
+- English and Vietnamese language switching
+- Design, camera, and performance sections
+- Interactive Sketchfab 3D comparison with iPhone 16 Pro Max
+- Scroll reveal animations and lazy-loaded media
 
-## Run
+## Run locally
 
 ```bash
 npm install

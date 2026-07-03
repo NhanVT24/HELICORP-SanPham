@@ -37,7 +37,7 @@ const performanceFeatures = [
   },
 ];
 
-export default function PerformanceSection({ darkMode }) {
+export default function PerformanceSection({ darkMode, language }) {
   const sectionRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -83,13 +83,13 @@ export default function PerformanceSection({ darkMode }) {
           }`}
         >
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#ff7a1a]">Performance</p>
-          <h2 className={`mt-4 animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:240%_240%] bg-clip-text text-4xl font-semibold leading-[1.02] tracking-[-0.055em] text-transparent sm:text-6xl lg:text-7xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#ffd39b_22%,#ff9b62_48%,#ffb6d9_72%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#d94f00_25%,#ff7a1a_52%,#7b61ff_78%,#111_100%)]"}`}>
-            New dimensions
+          <h2 className={`mt-4 pb-[0.14em] animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:240%_240%] bg-clip-text text-4xl font-semibold leading-[1.1] tracking-[-0.055em] text-transparent sm:text-6xl lg:text-7xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#ffd39b_22%,#ff9b62_48%,#ffb6d9_72%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#d94f00_25%,#ff7a1a_52%,#7b61ff_78%,#111_100%)]"}`}>
+            {language === "vi" ? "Một tầm cao mới" : "New dimensions"}
             <br />
-            in power.
+            {language === "vi" ? "về sức mạnh." : "in power."}
           </h2>
           <p className={`mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg ${darkMode ? "text-white/62" : "text-black/60"}`}>
-            From intensive graphics to massive media files, iPhone 17 Pro Max delivers blazing-fast performance. A19 Pro, an advanced vapor chamber, and the aluminum unibody work together to sustain speed while efficiently managing heat.
+            {language === "vi" ? "Từ đồ họa chuyên sâu đến các tệp đa phương tiện dung lượng lớn, iPhone 17 Pro Max mang lại hiệu năng cực nhanh. A19 Pro, buồng hơi tiên tiến và thân nhôm nguyên khối phối hợp để duy trì tốc độ và kiểm soát nhiệt hiệu quả." : "From intensive graphics to massive media files, iPhone 17 Pro Max delivers blazing-fast performance. A19 Pro, an advanced vapor chamber, and the aluminum unibody work together to sustain speed while efficiently managing heat."}
           </p>
         </div>
 
@@ -99,6 +99,11 @@ export default function PerformanceSection({ darkMode }) {
           }`}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onClick={() => setActiveSlide((current) => (current + 1) % performanceSlides.length)}
+          onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") setActiveSlide((current) => (current + 1) % performanceSlides.length); }}
+          role="button"
+          tabIndex={0}
+          aria-label="Show next performance view"
         >
           {performanceSlides.map((slide, index) => (
             <img
@@ -110,10 +115,10 @@ export default function PerformanceSection({ darkMode }) {
               height={slide.height}
               loading="lazy"
               decoding="async"
-              fetchpriority="low"
+              fetchPriority="low"
               className={`pointer-events-none absolute inset-0 h-full w-full object-contain drop-shadow-[0_35px_65px_rgba(0,0,0,0.3)] transition-[opacity,transform,filter] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 index === activeSlide
-                  ? "scale-100 opacity-100 blur-0"
+                  ? "animate-[performanceSlideIn_850ms_cubic-bezier(0.16,1,0.3,1)] scale-100 opacity-100 blur-0"
                   : "scale-[1.04] opacity-0 blur-sm"
               }`}
             />
@@ -124,7 +129,7 @@ export default function PerformanceSection({ darkMode }) {
               <button
                 key={slide.label}
                 type="button"
-                onClick={() => setActiveSlide(index)}
+                onClick={(event) => { event.stopPropagation(); setActiveSlide(index); }}
                 aria-label={`Show ${slide.label}`}
                 aria-current={index === activeSlide ? "true" : undefined}
                 className={`h-2.5 rounded-full transition-all duration-500 ${
@@ -152,9 +157,9 @@ export default function PerformanceSection({ darkMode }) {
                 >
                   <FeatureIcon size={23} strokeWidth={1.8} />
                 </span>
-                <h3 className="text-lg font-semibold">{feature.title}</h3>
+                <h3 className="text-lg font-semibold">{language === "vi" ? ["Chip A19 Pro", "Đồ họa và tốc độ", "Bộ tăng tốc Neural"][index] : feature.title}</h3>
                 <p className={`mt-3 text-sm leading-relaxed ${darkMode ? "text-white/55" : "text-black/55"}`}>
-                  {feature.description}
+                  {language === "vi" ? ["Apple silicon mang lại tốc độ và hiệu quả vượt trội cho những tác vụ đòi hỏi cao nhất.", "GPU mạnh mẽ và thiết kế tản nhiệt tiên tiến duy trì hiệu năng cao lâu hơn.", "Khả năng tăng tốc chuyên dụng trong từng lõi GPU hỗ trợ các tác vụ AI và đồ họa nặng."][index] : feature.description}
                 </p>
               </article>
             );

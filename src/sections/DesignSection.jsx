@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 
 const colors = [
-  { id: "orange", label: "Cosmic Orange", swatch: "#ff6b1a", image: "/color_orange-removebg-preview.webp" },
-  { id: "blue", label: "Deep Blue", swatch: "#394b63", image: "/color_blue.webp" },
-  { id: "silver", label: "Silver", swatch: "#d9d9d6", image: "/color_silver-removebg-preview.webp" },
+  { id: "orange", label: "Cosmic Orange", swatch: "#ff6b1a", image: "/color_orange-removebg-preview.png" },
+  { id: "blue", label: "Deep Blue", swatch: "#394b63", image: "/color_blue.png" },
+  { id: "silver", label: "Silver", swatch: "#d9d9d6", image: "/color_silver-removebg-preview.png" },
 ];
 
 const features = [
@@ -28,7 +28,7 @@ const features = [
     label: "Aluminum unibody",
     icon: Box,
     accent: "#6ea8ff",
-    image: "/Aluminum_unibody-removebg-preview.webp",
+    image: "/Aluminum_unibody-removebg-preview.png",
     description:
       "Optimized for performance and all-day battery life. The aluminum alloy unibody is remarkably light and exceptionally effective at conducting heat.",
   },
@@ -37,7 +37,7 @@ const features = [
     label: "Vapor chamber",
     icon: ThermometerSun,
     accent: "#4dd7ff",
-    image: "/Vapor_chamber-removebg-preview.webp",
+    image: "/Vapor_chamber-removebg-preview.png",
     description:
       "Deionized water sealed inside moves heat away from the A19 Pro chip, enabling even higher sustained performance on iPhone 17 Pro Max.",
   },
@@ -46,7 +46,7 @@ const features = [
     label: "Ceramic Shield",
     icon: ShieldCheck,
     accent: "#b6a0ff",
-    image: "/Ceramic_Shield.-removebg-preview.webp",
+    image: "/Ceramic_Shield.-removebg-preview.png",
     description:
       "Ceramic Shield protects the back of iPhone 17 Pro Max with 4x better resistance to cracks, while Ceramic Shield 2 on the front delivers 3x better scratch resistance.",
   },
@@ -55,7 +55,7 @@ const features = [
     label: "Immersive pro display",
     icon: Smartphone,
     accent: "#ff70b8",
-    image: "/Immersive_pro_display.-removebg-preview.webp",
+    image: "/Immersive_pro_display.-removebg-preview.png",
     description:
       "Our best-ever 6.9-inch Super Retina XDR display. Brighter, with better anti-reflection and ProMotion technology up to 120Hz.",
   },
@@ -73,20 +73,31 @@ const features = [
     label: "Action button",
     icon: Zap,
     accent: "#ff8a3d",
-    image: "/actionbutton.webp",
+    image: "/actionbutton.png",
     description:
       "A customizable fast track to your favorite feature. Long press to launch Silent mode, Translation, Shortcuts, and more.",
   },
 ];
 
-export default function DesignSection({ darkMode }) {
+const viFeatureCopy = {
+  colors: ["Màu sắc", "Chọn một trong ba màu hoàn thiện nổi bật. iPhone 17 Pro Max đang hiển thị với màu Bạc."],
+  unibody: ["Thân nhôm nguyên khối", "Tối ưu cho hiệu năng và pin cả ngày. Hợp kim nhôm nguyên khối nhẹ và dẫn nhiệt hiệu quả."],
+  vapor: ["Buồng hơi", "Nước khử ion được niêm kín bên trong giúp dẫn nhiệt khỏi chip A19 Pro để duy trì hiệu năng cao hơn."],
+  shield: ["Ceramic Shield", "Ceramic Shield bảo vệ mặt sau tốt hơn trước vết nứt, trong khi Ceramic Shield 2 tăng khả năng chống xước ở mặt trước."],
+  display: ["Màn hình Pro sống động", "Màn hình Super Retina XDR 6,9 inch tốt nhất, sáng hơn, ít phản chiếu hơn và hỗ trợ ProMotion 120Hz."],
+  "camera-control": ["Điều khiển Camera", "Chụp ảnh, quay video và điều chỉnh cài đặt tức thì để bạn không bỏ lỡ khoảnh khắc nào."],
+  action: ["Nút Tác vụ", "Lối tắt tùy chỉnh đến tính năng yêu thích như chế độ Im lặng, Dịch thuật và Phím tắt."],
+};
+
+export default function DesignSection({ darkMode, language }) {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeColor, setActiveColor] = useState("silver");
   const [direction, setDirection] = useState("next");
   const [isVisible, setIsVisible] = useState(false);
 
-  const activeFeature = features[activeIndex];
+  const localizedFeatures = language === "vi" ? features.map((feature) => ({ ...feature, label: viFeatureCopy[feature.id][0], description: viFeatureCopy[feature.id][1] })) : features;
+  const activeFeature = localizedFeatures[activeIndex];
   const activeColorData = colors.find((color) => color.id === activeColor);
   const activeImage = activeFeature.id === "colors" ? activeColorData.image : activeFeature.image;
 
@@ -137,13 +148,31 @@ export default function DesignSection({ darkMode }) {
               Design
             </p>
           </div>
-          <h2 className={`mx-auto max-w-5xl animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:220%_220%] bg-clip-text text-center text-4xl font-semibold tracking-[-0.04em] text-transparent sm:text-5xl lg:text-6xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#8fc5ff_22%,#c8afff_48%,#ff9dca_72%,#ffd39b_88%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#0071e3_25%,#7b61ff_50%,#ff5fa2_75%,#111_100%)]"}`}>
-            Innovation in every detail.
+          <h2 className={`mx-auto max-w-5xl px-2 pb-[0.14em] animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:220%_220%] bg-clip-text text-center text-3xl font-semibold leading-[1.12] tracking-[-0.04em] text-transparent sm:text-5xl lg:text-6xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#8fc5ff_22%,#c8afff_48%,#ff9dca_72%,#ffd39b_88%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#0071e3_25%,#7b61ff_50%,#ff5fa2_75%,#111_100%)]"}`}>
+            {language === "vi" ? "Đổi mới trong từng chi tiết." : "Innovation in every detail."}
           </h2>
         </div>
 
         <div className="relative mt-10 min-h-[680px] sm:mt-12 lg:min-h-[720px]">
-          <div className="pointer-events-none absolute right-[-5%] top-[43%] z-0 h-[82%] w-[82%] -translate-y-1/2 max-lg:right-[-15%] max-lg:w-[100%] max-md:right-[-30%] max-md:top-[40%] max-md:h-[64%] max-md:w-[130%]">
+          <div className="relative mb-7 h-[280px] overflow-hidden rounded-[28px] md:hidden">
+            <img
+              key={`mobile-${activeFeature.id}-${activeColor}`}
+              src={activeImage}
+              alt={`${activeFeature.label} on iPhone 17 Pro Max`}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full animate-[designSlideNext_600ms_cubic-bezier(0.22,1,0.36,1)_both] object-contain drop-shadow-[0_22px_42px_rgba(0,0,0,0.2)]"
+            />
+          </div>
+
+          <div
+            className="absolute right-[-5%] top-[43%] z-0 hidden h-[82%] w-[82%] -translate-y-1/2 cursor-pointer md:block max-lg:right-[-15%] max-lg:w-[100%]"
+            onClick={() => { setDirection("next"); setActiveIndex((current) => (current + 1) % localizedFeatures.length); }}
+            onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { setDirection("next"); setActiveIndex((current) => (current + 1) % localizedFeatures.length); } }}
+            role="button"
+            tabIndex={0}
+            aria-label="Show next design feature"
+          >
             <div
               key={`${activeFeature.id}-${activeColor}`}
               className={`absolute inset-0 ${
@@ -161,8 +190,8 @@ export default function DesignSection({ darkMode }) {
           </div>
 
           <div className="relative z-30 grid min-h-[680px] items-start gap-6 lg:min-h-[720px] lg:grid-cols-[285px_minmax(0,1fr)] xl:grid-cols-[315px_minmax(0,1fr)]">
-            <div className="relative z-40 flex w-full max-w-[420px] flex-col items-start gap-2.5">
-              {features.map((feature, index) => {
+            <div className="relative z-40 flex w-full max-w-[420px] flex-col items-start gap-2.5 max-md:max-w-none">
+              {localizedFeatures.map((feature, index) => {
                 const isActive = index === activeIndex;
                 const isColors = feature.id === "colors";
                 const isExpanded = isActive && !isColors;
@@ -182,7 +211,7 @@ export default function DesignSection({ darkMode }) {
                           ? `z-50 h-[146px] w-full rounded-[26px] shadow-[0_16px_34px_rgba(0,0,0,0.13)] lg:w-[calc(100%+90px)] ${
                               darkMode ? "border-white/15 bg-[#242426]/95" : "border-black/10 bg-white/95"
                             }`
-                          : `z-30 h-[62px] rounded-full ${isActive ? "w-full" : "w-[90%] hover:translate-x-1"} ${
+                          : `z-30 h-[62px] rounded-full ${isActive ? "w-full" : "w-[90%] max-md:w-full hover:translate-x-1"} ${
                               darkMode
                                 ? `${isActive ? "border-white/15" : "border-transparent"} bg-[#1d1d1f]/92 hover:bg-[#28282a]`
                                 : `${isActive ? "border-black/10" : "border-transparent"} bg-[#e8e8ed]/92 hover:bg-[#dedee3]`

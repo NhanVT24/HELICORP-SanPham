@@ -104,6 +104,19 @@ body {
   }
 }
 
+@keyframes performanceSlideIn {
+  from {
+    opacity: 0;
+    transform: translate3d(90px, 0, 0) scale(1.04);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
 .meteor {
   position: absolute;
   width: 4px;

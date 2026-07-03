@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu, Moon, Sun, X } from "lucide-react";
 
-const navItems = [
-  { id: "hero", label: "Overview" },
-  { id: "design", label: "Design" },
-  { id: "camera", label: "Camera" },
-  { id: "performance", label: "Performance" },
-  { id: "explore", label: "Explore" },
-];
-
-export default function Header({ darkMode, onToggleTheme, activeId }) {
+export default function Header({ darkMode, onToggleTheme, activeId, language, onToggleLanguage }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -29,6 +21,9 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
 
   const textClass = darkMode ? "text-white" : "text-[#1d1d1f]";
   const subTextClass = darkMode ? "text-white/58" : "text-[#6e6e73]";
+  const navItems = language === "vi"
+    ? [{ id: "hero", label: "Tổng quan" }, { id: "design", label: "Thiết kế" }, { id: "camera", label: "Camera" }, { id: "performance", label: "Hiệu năng" }, { id: "explore", label: "Khám phá" }]
+    : [{ id: "hero", label: "Overview" }, { id: "design", label: "Design" }, { id: "camera", label: "Camera" }, { id: "performance", label: "Performance" }, { id: "explore", label: "Explore" }];
 
   return (
     <header className="fixed left-0 top-0 z-50 w-full px-4 py-4 sm:px-5">
@@ -37,7 +32,7 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
       >
         <a
           href="#hero"
-          className={`ml-4 flex items-center gap-3 rounded-2xl px-2 py-1 lg:w-64 ${textClass}`}
+          className={`ml-4 flex items-center gap-3 rounded-2xl px-2 py-1 lg:w-52 xl:w-64 ${textClass}`}
         >
           <span className="flex h-10 w-10 shrink-0 items-center justify-center">
             <img
@@ -53,7 +48,7 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
             <p className={`text-[15px] font-semibold tracking-tight ${textClass}`}>
               iPhone 17 Pro Max
             </p>
-            <p className={`text-[11px] ${subTextClass}`}>Apple</p>
+            <p className={`text-[11px] ${subTextClass}`}>Designed by Vo Thanh Nhan</p>
           </div>
         </a>
 
@@ -66,7 +61,7 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
               key={item.id}
               href={`#${item.id}`}
               aria-current={activeId === item.id ? "page" : undefined}
-              className={`rounded-full px-5 py-2.5 text-[15px] font-semibold transition-all duration-300 ${
+              className={`rounded-full px-3 py-2.5 text-[13px] font-semibold transition-all duration-300 xl:px-4 xl:text-[14px] ${
                 activeId === item.id
                   ? darkMode
                     ? "bg-white text-black shadow-[0_8px_22px_rgba(0,0,0,0.16)]"
@@ -81,7 +76,7 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
           ))}
         </nav>
 
-        <div className="mr-3 flex shrink-0 items-center justify-end gap-2 sm:mr-4 lg:w-64">
+        <div className="mr-3 flex shrink-0 items-center justify-end gap-2 sm:mr-4 lg:w-52 xl:w-64">
           <button
             type="button"
             onClick={() => setMobileOpen((open) => !open)}
@@ -92,6 +87,15 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
             }`}
           >
             {mobileOpen ? <X size={19} /> : <Menu size={19} />}
+          </button>
+
+          <button
+            type="button"
+            onClick={onToggleLanguage}
+            aria-label={language === "en" ? "Switch to Vietnamese" : "Switch to English"}
+            className={`flex h-11 items-center justify-center rounded-full border px-3 text-xs font-bold tracking-[0.12em] transition ${darkMode ? "border-white/10 bg-white/10 text-white" : "border-black/10 bg-black/5 text-[#1d1d1f]"}`}
+          >
+            {language === "en" ? "EN / VI" : "VI / EN"}
           </button>
 
           <div className="relative h-11 w-11 sm:w-[8.75rem]">
@@ -122,7 +126,7 @@ export default function Header({ darkMode, onToggleTheme, activeId }) {
                   darkMode ? "text-white" : "text-[#1d1d1f]"
                 }`}
               >
-                {darkMode ? "Light Mode" : "Dark Mode"}
+                {language === "vi" ? (darkMode ? "Chế độ sáng" : "Chế độ tối") : (darkMode ? "Light Mode" : "Dark Mode")}
               </span>
             </button>
           </div>

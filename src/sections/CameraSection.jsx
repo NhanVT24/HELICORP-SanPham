@@ -21,7 +21,7 @@ const cameraSlides = [
   },
 ];
 
-export default function CameraSection({ darkMode }) {
+export default function CameraSection({ darkMode, language }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const videoShellRef = useRef(null);
@@ -29,6 +29,7 @@ export default function CameraSection({ darkMode }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const youtubeOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
   const cameraVideoSrc = `https://www.youtube-nocookie.com/embed/h6CwwHyQxKI?enablejsapi=1&origin=${encodeURIComponent(
     youtubeOrigin,
@@ -48,7 +49,10 @@ export default function CameraSection({ darkMode }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          setShouldLoadVideo(true);
+        }
       },
       { threshold: 0.18 },
     );
@@ -109,7 +113,7 @@ export default function CameraSection({ darkMode }) {
       window.removeEventListener("message", handlePlayerMessage);
       postCommand("pauseVideo");
     };
-  }, []);
+  }, [shouldLoadVideo]);
 
   return (
     <section
@@ -148,7 +152,7 @@ export default function CameraSection({ darkMode }) {
               height={slide.height}
               loading="lazy"
               decoding="async"
-              fetchpriority="low"
+              fetchPriority="low"
               className={`pointer-events-none absolute left-1/2 top-1/2 h-auto w-[112%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_55px_rgba(0,0,0,0.24)] transition-[opacity,transform,filter] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 index === activeSlide
                   ? "scale-100 opacity-100 blur-0"
@@ -162,7 +166,7 @@ export default function CameraSection({ darkMode }) {
               <button
                 key={slide.label}
                 type="button"
-                onClick={() => setActiveSlide(index)}
+                onClick={(event) => { event.stopPropagation(); setActiveSlide(index); }}
                 aria-label={`Show ${slide.label}`}
                 aria-current={index === activeSlide ? "true" : undefined}
                 className={`h-2.5 rounded-full transition-all duration-500 ${
@@ -178,11 +182,11 @@ export default function CameraSection({ darkMode }) {
         </div>
 
         <div className="max-w-xl lg:pl-4">
-          <h2 className={`animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:240%_240%] bg-clip-text text-4xl font-semibold leading-[1.05] tracking-[-0.05em] text-transparent [text-shadow:0_2px_18px_rgba(255,255,255,0.12)] sm:text-5xl lg:text-6xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#b7d7ff_18%,#9bbcff_34%,#d6b4ff_50%,#ffb6d9_66%,#ffd39b_82%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#0071e3_25%,#7b61ff_50%,#ff5fa2_75%,#111_100%)]"}`}>
-            A pro camera system. At every focal length.
+          <h2 className={`pb-[0.14em] animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:240%_240%] bg-clip-text text-4xl font-semibold leading-[1.12] tracking-[-0.05em] text-transparent [text-shadow:0_2px_18px_rgba(255,255,255,0.12)] sm:text-5xl lg:text-6xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#b7d7ff_18%,#9bbcff_34%,#d6b4ff_50%,#ffb6d9_66%,#ffd39b_82%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#0071e3_25%,#7b61ff_50%,#ff5fa2_75%,#111_100%)]"}`}>
+            {language === "vi" ? "Hệ thống camera Pro. Ở mọi tiêu cự." : "A pro camera system. At every focal length."}
           </h2>
           <p className={`mt-7 text-lg leading-relaxed sm:text-xl ${darkMode ? "text-white/65" : "text-black/60"}`}>
-            The iPhone 17 Pro Max features a 48MP Pro Fusion triple-camera system with advanced telephoto, ultra-wide, and main sensors, offering up to 16x total optical zoom and enhanced low-light performance.
+            {language === "vi" ? "iPhone 17 Pro Max sở hữu hệ thống ba camera Pro Fusion 48MP với camera chính, siêu rộng và telephoto tiên tiến, hỗ trợ phạm vi zoom quang học tổng thể đến 16x và chụp thiếu sáng tốt hơn." : "The iPhone 17 Pro Max features a 48MP Pro Fusion triple-camera system with advanced telephoto, ultra-wide, and main sensors, offering up to 16x total optical zoom and enhanced low-light performance."}
           </p>
 
           <div className="mt-10 grid grid-cols-3 gap-3">
@@ -214,10 +218,10 @@ export default function CameraSection({ darkMode }) {
         >
           <div className="mb-7 text-center">
             <p className={`text-sm font-bold uppercase tracking-[0.16em] ${darkMode ? "text-white/48" : "text-black/45"}`}>
-              Shot on iPhone 17 Pro Max
+              {language === "vi" ? "Chụp bằng iPhone 17 Pro Max" : "Shot on iPhone 17 Pro Max"}
             </p>
             <h3 className="mt-3 text-3xl font-semibold tracking-[-0.04em] sm:text-5xl">
-              See the pro camera in action.
+              {language === "vi" ? "Trải nghiệm camera Pro trong thực tế." : "See the pro camera in action."}
             </h3>
           </div>
 
@@ -227,15 +231,15 @@ export default function CameraSection({ darkMode }) {
               darkMode ? "border-white/10" : "border-black/10"
             }`}
           >
-            <iframe
-              ref={videoRef}
-              src={cameraVideoSrc}
-              title="iPhone 17 Pro Max camera video"
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="pointer-events-none absolute inset-0 h-full w-full border-0"
-            />
+            {shouldLoadVideo && <iframe
+                ref={videoRef}
+                src={cameraVideoSrc}
+                title="iPhone 17 Pro Max camera video"
+                loading="lazy"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="pointer-events-none absolute inset-0 h-full w-full border-0"
+              />}
           </div>
         </div>
 
@@ -245,12 +249,12 @@ export default function CameraSection({ darkMode }) {
           }`}
         >
           <div className="mx-auto max-w-xl lg:pr-6">
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#ff8a33]">Front camera</p>
-            <h3 className={`mt-4 animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:240%_240%] bg-clip-text text-4xl font-semibold leading-[1.05] tracking-[-0.05em] text-transparent sm:text-6xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#b7d7ff_24%,#d6b4ff_50%,#ffb6d9_74%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#0071e3_25%,#7b61ff_50%,#ff5fa2_75%,#111_100%)]"}`}>
-              Center Stage keeps every face in frame.
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#ff8a33]">{language === "vi" ? "Camera trước" : "Front camera"}</p>
+            <h3 className={`mt-4 pb-[0.14em] animate-[appleGradient_7s_ease-in-out_infinite] bg-[length:240%_240%] bg-clip-text text-4xl font-semibold leading-[1.12] tracking-[-0.05em] text-transparent sm:text-6xl ${darkMode ? "bg-[linear-gradient(100deg,#fff_0%,#b7d7ff_24%,#d6b4ff_50%,#ffb6d9_74%,#fff_100%)]" : "bg-[linear-gradient(100deg,#111_0%,#0071e3_25%,#7b61ff_50%,#ff5fa2_75%,#111_100%)]"}`}>
+              {language === "vi" ? "Center Stage giữ mọi khuôn mặt trong khung hình." : "Center Stage keeps every face in frame."}
             </h3>
             <p className={`mt-6 text-lg leading-relaxed ${darkMode ? "text-white/62" : "text-black/60"}`}>
-              The 18MP Center Stage front camera gives you more flexible ways to frame photos and video. It automatically adjusts the field of view for group shots, keeps you centered on calls, and captures beautifully stabilized 4K HDR video.
+              {language === "vi" ? "Camera trước Center Stage 18MP mang đến cách căn khung linh hoạt hơn cho ảnh và video. Camera tự điều chỉnh góc nhìn khi chụp nhóm, giữ bạn ở trung tâm cuộc gọi và quay video 4K HDR ổn định." : "The 18MP Center Stage front camera gives you more flexible ways to frame photos and video. It automatically adjusts the field of view for group shots, keeps you centered on calls, and captures beautifully stabilized 4K HDR video."}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -269,13 +273,13 @@ export default function CameraSection({ darkMode }) {
 
           <div className="relative min-h-[520px] sm:min-h-[680px]">
             <img
-              src="/camerafront-removebg-preview.webp"
+              src="/camerafront-removebg-preview.png"
               alt="iPhone 17 Pro Max Center Stage front camera"
               width="500"
               height="499"
               loading="lazy"
               decoding="async"
-              fetchpriority="low"
+              fetchPriority="low"
               className="pointer-events-none absolute left-1/2 top-1/2 h-auto w-[92%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.28)]"
             />
           </div>
